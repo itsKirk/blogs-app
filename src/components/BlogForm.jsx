@@ -9,12 +9,15 @@ import FormLabel from '@mui/material/FormLabel';
 import { purple } from "@mui/material/colors";
 import { useState } from 'react';
 import '../index.css'
+import { useNavigate } from 'react-router-dom';
+
 function BlogForm() {
     const [category, setCategory] = useState('science')
     const [title, setTitle] = useState('')
     const [details, setDetails] = useState('')
     const [titleError, setTitleError] = useState(false)
     const [detailsError, setDetailsError] = useState(false)
+    const navigate = useNavigate()
     const handleSubmit = (e) => {
         e.preventDefault()
         setTitleError(false)
@@ -27,10 +30,10 @@ function BlogForm() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ title, details, category })
+                body: JSON.stringify({ title, details, category, created_at: Date.now() })
             }
             fetch('http://localhost:9090/blogs', options)
-                .then()
+                .then(() => navigate('/'))
         }
     }
     const fieldStyles = {
@@ -57,7 +60,7 @@ function BlogForm() {
                 error={detailsError}
                 fullWidth
                 multiline
-                rows={10}
+                rows={8}
                 required
                 label='Blog Details' />
             <FormControl sx={fieldStyles}>
